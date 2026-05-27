@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supabase Login</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+<style>
+
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#4f46e5,#9333ea);
+    font-family:Arial;
+}
+
+.container{
+    width:350px;
+    background:#fff;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+h2{
+    text-align:center;
+    color:#6d28d9;
+}
+
+input{
+    width:100%;
+    padding:14px;
+    margin-top:15px;
+    border-radius:10px;
+    border:1px solid #ccc;
+    font-size:16px;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    margin-top:20px;
+    border:none;
+    border-radius:10px;
+    background:#6d28d9;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#5b21b6;
+}
+
+#message{
+    text-align:center;
+    margin-top:15px;
+    color:green;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Register User</h2>
+
+<input type="text" id="username" placeholder="Username">
+<input type="text" id="phone" placeholder="Phone Number">
+<input type="password" id="password" placeholder="Password">
+
+<button onclick="registerUser()">Register</button>
+
+<div id="message"></div>
+
+</div>
+
+<script>
+
+const SUPABASE_URL = "https://frwbimnghfoidnjnfuhn.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_uSleMs6GiwmOuKIH9m4xOA__pc2sq_q";
+
+const supabaseClient = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+);
+
+async function registerUser(){
+
+    const username = document.getElementById("username").value;
+    const phone = document.getElementById("phone").value;
+    const password = document.getElementById("password").value;
+
+    const { data, error } = await supabaseClient
+    .from("users")
+    .insert([
+        {
+            username: username,
+            phone: phone,
+            password: password
+        }
+    ]);
+
+    if(error){
+        document.getElementById("message").innerHTML = error.message;
+    }else{
+        document.getElementById("message").innerHTML =
+        "User Registered Successfully";
+    }
+}
+
+</script>
+
+</body>
+</html>
